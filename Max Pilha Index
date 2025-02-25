@@ -1,0 +1,84 @@
+package pilha;
+
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+public class Pilha {
+	private int topo;
+	public static final int DEFAULT_CAPACITY = 5;
+	private int[] pilha;
+	
+	public Pilha(int capacidade) {
+		this.topo = -1;
+		this.pilha = new int[capacidade];
+	}
+	
+	public Pilha() {
+		this.topo = -1;
+		this.pilha = new int[DEFAULT_CAPACITY];
+	}
+	
+	public void push(int valor) {
+		this.pilha[++this.topo] = valor;
+		
+	}
+	
+	 public boolean isEmpty() {
+	        return this.topo == -1;
+	    }
+	 
+	 public int pop() {
+		 if(isEmpty()) throw new NoSuchElementException();
+		 return this.pilha[this.topo--];
+
+	 }
+	 
+	 public int peek() {
+		 if (isEmpty()) throw new NoSuchElementException();
+		 return this.pilha[this.topo];
+		 
+	 }
+	 
+	 public int maiorElemento(int index) {
+		 if (index < 0 || index > topo) {
+	            throw new IllegalArgumentException("Índice fora dos limites da pilha");
+	        }
+	        Pilha pilhaAux = new Pilha(this.pilha.length);
+	        int maiorElemento = 0;
+	        int count = 0;
+	        // Armazenar os elementos em pilhaAux e encontrar o maior
+
+	        while (count <= index) {
+	            int elemento = pop();
+	            pilhaAux.push(elemento);
+	            if (elemento > maiorElemento) {
+	                maiorElemento = elemento;
+	            }
+	            count++;
+	            }
+	        // Restaurar a pilha original
+
+	        while (!pilhaAux.isEmpty()) {
+	            push(pilhaAux.pop());
+
+	        }
+	        return maiorElemento;
+	    }
+	 public static void main(String[] args) {
+
+	        Scanner scanner = new Scanner(System.in);
+	        // Lê os elementos da pilha
+	        String[] input = scanner.nextLine().split(" ");
+	        Pilha pilha = new Pilha(input.length);
+
+	        for (String s : input) {
+	            pilha.push(Integer.parseInt(s));
+
+	        }
+	        int index = scanner.nextInt();
+	        int maior = pilha.maiorElemento(index);
+	        System.out.println(maior);
+
+	    }
+	
+}
