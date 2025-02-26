@@ -1,0 +1,102 @@
+package invertePilhaIndex;
+import java.util.Scanner;
+
+class InvertePilhaIndex {
+	
+	private int topo;
+	public int[] stack;
+	public static final int DEFAULT_CAPACITY = 20;
+	
+	public InvertePilhaIndex(int capacidade) {
+		this.topo = -1;
+		this.stack = new int[capacidade];
+	}
+	
+	public InvertePilhaIndex() {
+		this.topo = -1;
+		this.stack = new int[DEFAULT_CAPACITY];
+	}
+	
+	public boolean isEmpty() {
+		if(this.topo == -1)
+			return true;
+		return false;
+	}
+	public boolean isFull() {
+		if(this.topo == this.stack.length-1)
+			return true;
+		return false;
+	}
+	
+	public void push(int valor) {
+		if(isFull()) throw new RuntimeException();
+		this.stack[++this.topo] = valor;	
+	}
+	
+	public int pop() {
+		  if (isEmpty()) throw new RuntimeException("Pilha vazia");
+	        return this.stack[this.topo--];
+	    }
+	public int size() {
+		return this.topo +1;
+	}
+	public void inverteTopoIndex(int index) {
+	    InvertePilhaIndex stackAux = new InvertePilhaIndex(); 
+	    int count = 0;
+
+	    // Remove elementos da pilha original e coloca na pilha auxiliar
+	    while (count < index + 1 && !isEmpty()) {
+	        int elemento = pop();
+	        stackAux.push(elemento);
+	        count++;
+	    }
+
+	    // Agora, invertemos os elementos que estão em stackAux
+	    InvertePilhaIndex stackAux2 = new InvertePilhaIndex();
+	    while (!stackAux.isEmpty()) {
+	        stackAux2.push(stackAux.pop());
+	    }
+
+	    // Coloca os elementos invertidos de volta na pilha original
+	    while (!stackAux2.isEmpty()) {
+	        push(stackAux2.pop());
+	    }
+
+	    // Agora, vamos colocar os elementos restantes de volta na pilha original
+	    // Precisamos armazenar os elementos restantes em uma pilha auxiliar
+	    InvertePilhaIndex stackRestante = new InvertePilhaIndex();
+	    while (!isEmpty()) {
+	        stackRestante.push(pop());
+	    }
+
+	    // Coloca os elementos restantes de volta na pilha original
+	    while (!stackRestante.isEmpty()) {
+	        push(stackRestante.pop());
+	    }
+	}
+    public void printStack() {
+        for (int i = topo; i >= 0; i--) {
+            System.out.println(stack[i]);
+        }
+    }
+    
+
+    public static void main(String[] args) {
+    	Scanner scanner = new Scanner(System.in);
+        int tamanho = scanner.nextInt();
+        InvertePilhaIndex stack = new InvertePilhaIndex(tamanho);
+        
+        // Lê os elementos da pilha
+        for (int i = 0; i < tamanho; i++) {
+            stack.push(scanner.nextInt());
+        }
+        
+        int index = scanner.nextInt();
+        stack.inverteTopoIndex(index);
+        System.out.println("-");
+        stack.printStack();
+    
+	
+	}
+	
+}
