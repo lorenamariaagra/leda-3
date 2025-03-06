@@ -1,0 +1,9 @@
+    private Node getNode(int index) {
+        if(index < 0 || index >= size)
+            throw new RunTimeException();
+        Node atual = this.head;
+        for(int i = 0; i < index; i++){
+            atual = atual.next;
+        }
+        return atual;
+    }
